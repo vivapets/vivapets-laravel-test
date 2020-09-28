@@ -1,0 +1,69 @@
+#v3 Syntax
+version: '3.6'
+
+#Named Volumes
+volumes:
+    vivapets-test-mysql-data:
+        driver: local
+
+#Networks
+networks:
+    vivapets-test-internal-network:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.177.16.0/24
+
+services:
+    # Redis
+    vivapets-test-redis:
+        image: redis
+        container_name: vivapets-test-redis
+        ports:
+            - "6379:6379"
+
+    # MySQL
+    vivapets-test-db:
+        image: mariadb
+        container_name: vivapets-test-db
+        volumes:
+            - vivapets-test-mysql-data:/var/lib/mysql
+        networks:
+            - vivapets-test-internal-network
+        environment:
+            - MYSQL_ROOT_PASSWORD=VivapetsTest123
+            - MYSQL_ALLOW_EMPTY_PASSWORD=no
+            - MYSQL_USER=vivapets_test
+            - MYSQL_PASSWORD=VivapetsTest321
+            - MYSQL_DATABASE=vivapets_test
+
+    # PHP
+    vivapets-test-app:
+        build:
+            context: .
+            dockerfile: ./.docker/app/Dockerfile
+        container_name: vivapets-test-app
+        depends_on:
+            - vivapets-test-redis
+            - vivapets-test-db
+        links:
+            - vivapets-test-redis
+            - vivapets-test-db
+        volumes:
+            - ./:/home/hosting/vivapets_test/
+            - ./.docker/app/nginx/config/:/etc/nginx/
+            - ./.docker/app/php-fpm/www-common.conf:/usr/local/etc/upstream/www-common.conf
+            - ./.docker/app/php-fpm/upstream/:/usr/local/etc/php-fpm.d/
+            - ./.docker/app/supervisor/supervisord.conf:/etc/supervisord.conf
+            - ./.docker/app/supervisor/conf.d/:/etc/supervisor/conf.d/
+        environment:
+            # Redis
+            - "REDIS_HOST=vivapets-test-redis"
+            # MySQL
+            - "DB_HOST=vivapets-test-db"
+            # APP environment
+            - APP_ENV=local
+            - "APP_DEBUG=true"
+        ports:
+            - "80:8080"
