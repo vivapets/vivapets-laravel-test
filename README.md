@@ -50,20 +50,20 @@ This repository has the basic installation of a Laravel project at version 7.* w
 
 As a `Regular User`, I must be able to register an account with my `email`, `name` and `password`.
 As a `Regular User`, when I'm logged in, I must be able to:
-- [] See a list of all my dogs with their respective photos;
-- [] Add a new dog, with the option to upload his/her `photo`, `name`, `age`, and select a `breed` from a dropdown list;
-- [] Edit and update all data from my dogs
-- [] Delete any dog
+1. See a list of all my dogs with their respective photos;
+2. Add a new dog, with the option to upload his/her `photo`, `name`, `age`, and select a `breed` from a dropdown list;
+3. Edit and update all data from my dogs
+4. Delete any dog
 
 As an `Admin`, I must be able to login to an admin dashboard.
 As an `Admin`, in my dashboard I must be able to:
-- [] Have a page to list all registered users with their respective `names` and `emails`;
-- [] Block users from logging in (Ban them from their accounts);
-- [] Click on any user in the list and be redirected to a page with a list of his dogs with the option to delete any of them;
-- [] Have a page to list all available dog breeds;
-- [] Add a new dog breed;
-- [] Edit any dog breed;
-- [] Delete any dog breed;
+1. Have a page to list all registered users with their respective `names` and `emails`;
+2. Block users from logging in (Ban them from their accounts);
+3. Click on any user in the list and be redirected to a page with a list of his dogs with the option to delete any of them;
+4. Have a page to list all available dog breeds;
+5. Add a new dog breed;
+6. Edit any dog breed;
+7. Delete any dog breed;
 
 ### Requirements
 
