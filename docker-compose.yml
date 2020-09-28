@@ -43,6 +43,9 @@ services:
         build:
             context: .
             dockerfile: ./.docker/app/Dockerfile
+            args:
+                USERID: ${USERID:-1000}
+                GROUPID: ${GID:-1000}
         container_name: vivapets-test-app
         depends_on:
             - vivapets-test-redis

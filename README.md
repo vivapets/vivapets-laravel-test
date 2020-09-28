@@ -1,61 +1,80 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Vivapets Laravel Interview Test
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## Introduction
 
-## About Laravel
+The purpose of this is repository is meant to be a start point for an interviewee to be able to boot up the code and solve the problem.
+We'll be assessing the following topics in your code:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Design Patterns
+- PHP-FIG's PSR guidelines
+- Database modelling
+- Object Oriented Programming principles
+- Frontend code
+- Caching
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+We'll not assess any graphical design skills on frontend, as this test is intended to test your logical reasoning, best practices and coding skills.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### System Requirements
 
-## Learning Laravel
+- Unix OS
+- Port `80` available
+- Docker Engine
+- Docker-compose
+- `make` command installed
+- `git` installed
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Installation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Clone this repository locally
+2. Copy `.env.example` to `.env`
+3. Run `make setup`
+4. Run `make up`
 
-## Laravel Sponsors
+You can run `make bash` to enter the container's bash and execute commands inside the container.
+When finished, run `make down` to stop all containers.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## The Test
 
-### Premium Partners
+This repository has the basic installation of a Laravel project at version 7.* with `laravel/ui`.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+### Instructions
+- Fork this repository to your GitHub account
+- Complete the tasks given, paying attention to all requirements
+- Once completed, create a Pull Request to this repository
 
-## Contributing
+### Project
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- This project must implement user authentication and registration using Laravel's Auth.
+- There will be two different types of users: `Admin` and `Regular User`
+- Initial `Admin` account must be created via Database Seeding
 
-## Code of Conduct
+As a `Regular User`, I must be able to register an account with my `email`, `name` and `password`.
+As a `Regular User`, when I'm logged in, I must be able to:
+- [] See a list of all my dogs with their respective photos;
+- [] Add a new dog, with the option to upload his/her `photo`, `name`, `age`, and select a `breed` from a dropdown list;
+- [] Edit and update all data from my dogs
+- [] Delete any dog
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+As an `Admin`, I must be able to login to an admin dashboard.
+As an `Admin`, in my dashboard I must be able to:
+- [] Have a page to list all registered users with their respective `names` and `emails`;
+- [] Block users from logging in (Ban them from their accounts);
+- [] Click on any user in the list and be redirected to a page with a list of his dogs with the option to delete any of them;
+- [] Have a page to list all available dog breeds;
+- [] Add a new dog breed;
+- [] Edit any dog breed;
+- [] Delete any dog breed;
 
-## Security Vulnerabilities
+### Requirements
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Must use Laravel migrations to setup the tables in database
+- Endpoint responses must be simple JSON objects
+- Implement Service and Repository layers
+- Validate all input with Laravel's Request abstraction
+- Data fetched must be cached
+- Must use VueJS and SCSS to build the frontend
+- Frontend must consume data from back-end's responses
 
-## License
+-------------------
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Good luck! :D
