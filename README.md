@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The purpose of this is repository is meant to be a start point for an interviewee to be able to boot up the code and solve the problem.
+The purpose of this is repository is meant to be a starting point for an interviewee to be able to boot up the code and solve the problem.
 We'll be assessing the following topics in your code:
 
 - Design Patterns
