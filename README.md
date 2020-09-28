@@ -59,9 +59,9 @@ As an `Admin`, I must be able to login to an admin dashboard.
 As an `Admin`, in my dashboard I must be able to:
 1. Have a page to list all registered users with their respective `names` and `emails`;
 2. Block users from logging in (Ban them from their accounts);
-3. Click on any user in the list and be redirected to a page with a list of his dogs with the option to delete any of them;
+3. Click on any user in the list and be redirected to a page with a list of his dogs with the option to delete any of them (No need to edit dogs, only delete);
 4. Have a page to list all available dog breeds;
-5. Add a new dog breed;
+5. Add a new dog breed with a `breed_name`;
 6. Edit any dog breed;
 7. Delete any dog breed;
 
