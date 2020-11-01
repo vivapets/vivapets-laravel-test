@@ -8,8 +8,8 @@ ENV USERID $USERID
 
 WORKDIR /home/hosting/vivapets_test/
 
-RUN groupmod -g ${GROUPID} www-data \
-    && usermod -d '/home/hosting/vivapets_test/' -c "PHP-FPM" -g ${GROUPID} -u ${USERID} www-data
+# RUN groupmod -g ${GROUPID} www-data \
+#     && usermod -d '/home/hosting/vivapets_test/' -c "PHP-FPM" -g ${GROUPID} -u ${USERID} www-data
 
 RUN apt-get update \
     && apt-get install -my wget gnupg zlib1g-dev libxml2-dev libicu-dev g++ libpng-dev
