@@ -12,16 +12,16 @@ class Animal extends Model
 
     public function breed()
     {
-        return $this->belongsTo('App\Models\AnimalBreed');
+        return $this->belongsTo(AnimalBreed::class);
     }
 
     public function type()
     {
-        return $this->belongsTo('App\Models\AnimalType');
+        return $this->belongsTo(AnimalType::class);
     }
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class);
     }
 }
