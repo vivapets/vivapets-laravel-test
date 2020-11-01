@@ -36,4 +36,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * User type
+     */
+    public function type()
+    {
+        return $this->belongsTo(UserType::class);
+    }
+
+    /**
+     * Get animals by users
+     */
+    public function animals()
+    {
+        return $this->hasMany(Animal::class);
+    }
 }

@@ -4,19 +4,20 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Http\Resources\AnimalResource;
-use App\Repositories\Contracts\AnimalRepositoryInterface;
+use App\Repositories\Contracts\UserRepositoryInterface;
 
-class AnimalController extends Controller
+class UserController extends Controller
 {
     /**
      * Repository that handle all the model stuff
      */
     private $repository;
 
-    public function __construct(AnimalRepositoryInterface $animal)
+    public function __construct(UserRepositoryInterface $user)
     {
-        $this->repository = $animal;
+        $this->repository = $user;
     }
 
     /**
@@ -26,7 +27,17 @@ class AnimalController extends Controller
      */
     public function index()
     {
-        return AnimalResource::collection($this->repository->paginate());
+        return UserResource::collection($this->repository->onlyRegularUsers()->paginate());
+    }
+
+    /**
+     * Display a listing of animals of the user.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function animals(Request $request, $id)
+    {
+        return AnimalResource::collection($this->repository->animals()->paginate());
     }
 
     /**
@@ -37,8 +48,7 @@ class AnimalController extends Controller
      */
     public function store(Request $request)
     {
-        $animal = $this->repository->create($request->all());
-        return response()->json(new AnimalResource($animal), 201);   
+        return response()->json(null, 501);
     }
 
     /**
@@ -49,7 +59,7 @@ class AnimalController extends Controller
      */
     public function show($id)
     {
-        return new AnimalResource($this->repository->find($id));
+        return response()->json(null, 501);
     }
 
     /**
@@ -61,8 +71,7 @@ class AnimalController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->repository->update($request->all());
-        return response()->json(new AnimalResource($this->repository->find($id)));
+        return response()->json(null, 501);
     }
 
     /**
@@ -73,7 +82,6 @@ class AnimalController extends Controller
      */
     public function destroy($id)
     {
-        $this->repository->delete();
-        return response()->json(null, 204);
+        return response()->json(null, 501);
     }
 }

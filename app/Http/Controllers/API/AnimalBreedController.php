@@ -4,19 +4,19 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AnimalResource;
-use App\Repositories\Contracts\AnimalRepositoryInterface;
+use App\Http\Resources\AnimalBreedResource;
+use App\Repositories\Contracts\AnimalBreedRepositoryInterface;
 
-class AnimalController extends Controller
+class AnimalBreedController extends Controller
 {
     /**
      * Repository that handle all the model stuff
      */
     private $repository;
 
-    public function __construct(AnimalRepositoryInterface $animal)
+    public function __construct(AnimalBreedRepositoryInterface $breed)
     {
-        $this->repository = $animal;
+        $this->repository = $breed;
     }
 
     /**
@@ -26,7 +26,7 @@ class AnimalController extends Controller
      */
     public function index()
     {
-        return AnimalResource::collection($this->repository->paginate());
+        return AnimalBreedResource::collection($this->repository->paginate());
     }
 
     /**
@@ -37,8 +37,8 @@ class AnimalController extends Controller
      */
     public function store(Request $request)
     {
-        $animal = $this->repository->create($request->all());
-        return response()->json(new AnimalResource($animal), 201);   
+        $type = $this->repository->create($request->all());
+        return response()->json(new AnimalBreedResource($type), 201);   
     }
 
     /**
@@ -49,7 +49,7 @@ class AnimalController extends Controller
      */
     public function show($id)
     {
-        return new AnimalResource($this->repository->find($id));
+        return new AnimalBreedResource($this->repository->find($id));
     }
 
     /**
@@ -62,7 +62,7 @@ class AnimalController extends Controller
     public function update(Request $request, $id)
     {
         $this->repository->update($request->all());
-        return response()->json(new AnimalResource($this->repository->find($id)));
+        return response()->json(new AnimalBreedResource($this->repository->find($id)));
     }
 
     /**

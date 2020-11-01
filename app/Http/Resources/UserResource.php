@@ -18,7 +18,8 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'is_banned' => $this->is_banned
+            'is_banned' => $this->is_banned,
+            'type' => new UserTypeResource($this->type)
         ];
     }
 }

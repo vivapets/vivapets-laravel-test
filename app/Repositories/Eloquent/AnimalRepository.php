@@ -7,7 +7,7 @@ use App\Repositories\Contracts\AnimalRepositoryInterface;
 
 class AnimalRepository extends BasicRepository implements AnimalRepositoryInterface
 {
-    protected $model = Animal::class;
+    protected $model;
 
     public function __construct(Animal $animal = null) {
         if($animal === null) {
