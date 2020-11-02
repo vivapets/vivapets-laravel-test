@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\AnimalResource;
 use App\Repositories\Contracts\UserRepositoryInterface;
@@ -23,7 +24,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return App\Http\Resources\UserResource
      */
     public function index()
     {
@@ -33,12 +34,35 @@ class UserController extends Controller
     /**
      * Display a listing of animals of the user.
      *
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request  $request
+     * @param   $id
+     * @return App\Http\Resources\AnimalResource
      */
     public function animals(Request $request, $id)
     {
         return AnimalResource::collection($this->repository->animals()->paginate());
     }
+
+    /**
+     * Returns the current logged in user
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return App\Http\Resources\UserResource
+     */
+    public function user(Request $request)
+    {
+        if (Auth::check()) {
+            return response()->json([
+                'message' => 'User not logged in'
+            ], 403);
+        }
+
+        dd(Auth::user()->name);
+        
+        return new UserResource($request->user());
+    }
+
+    
 
     /**
      * Store a newly created resource in storage.
