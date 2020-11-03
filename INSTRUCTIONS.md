@@ -2,7 +2,13 @@
 
 ## Introduction
 
-This is my solution for the proposal test. 
+This is my solution for the proposed test. Features:
+
+- API with OAuth 2.0
+- Alows the app to grown for any king of animal (not just dogs)
+- User types are dynamic
+- Animals Types are dynamic
+- The menu is also dynamic according to the user type
 
 
 ## Admin User
