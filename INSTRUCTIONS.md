@@ -36,7 +36,8 @@ The default admin users, created in the seed is `test@vivapets.com` and the pass
 2. Copy `.env.example` to `.env`
 3. Run `make setup`
 4. Run `make up`
-5. Run `make bash && php artisan storage:link`
+5. Run `make bash && php artisan passport:install && php artisan storage:link`
+6. Create at least one breed
 
 
 ### Docker issues
