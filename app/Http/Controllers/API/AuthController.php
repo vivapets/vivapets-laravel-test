@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Cache;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\UserType;
@@ -12,6 +13,11 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     /**
+     * Cache key name
+     */
+    protected $cacheKey = 'users_list';
+
+    /**
      * Create a new user
      *
      * @param  [string] name
@@ -21,13 +27,14 @@ class AuthController extends Controller
      */
     public function signup(Request $request)
     {
-        $request->validate(User::rules);
+        $request->validate(User::$rules);
+        Cache::forget($this->cacheKey);
 
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'type_id' => UserType::registerTypeID(),
+            'type_id' => UserType::REGULAR_USER_TYPE_ID,
             'is_banned' => 0
         ]);
 
@@ -60,9 +67,17 @@ class AuthController extends Controller
         }
 
         $user = $request->user();
+
+        if($user->is_banned) {
+            return response()->json([
+                'message' => 'Banned!'
+            ], 401);
+        }
+
         $tokenResult = $user->createToken('VivaPets User Token');
 
         $token = $tokenResult->token;
+        $token->expires_at = Carbon::now()->addDay();
         if ($request->remember_me) {
             $token->expires_at = Carbon::now()->addWeeks(1);
         }

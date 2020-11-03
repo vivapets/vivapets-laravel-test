@@ -36,4 +36,13 @@ class UserRepository extends BasicRepository implements UserRepositoryInterface
         return $this->model->animals();
     }
 
+    /**
+     * Ban/Unban a user
+     */
+    public function ban()
+    {
+        $this->model->is_banned = !$this->model->is_banned;
+        $this->model->save();
+    }
+
 }

@@ -23,6 +23,7 @@ Route::middleware('auth:api')->prefix('v1')->group(function() {
     Route::get('user', 'API\AuthController@user');
     
     Route::get('users/{user}/animals', 'API\UserController@animals');
+    Route::get('users/{user}/ban', 'API\UserController@ban');
     Route::apiResource('users', 'API\UserController');
 
     Route::apiResource('animals', 'API\AnimalController');

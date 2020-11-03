@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use Cache;
+use Storage;
+use App\Models\Animal;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AnimalResource;
@@ -14,6 +17,16 @@ class AnimalController extends Controller
      */
     private $repository;
 
+    /**
+     * Cache key name
+     */
+    protected $cacheKey = 'animals_list';
+
+    /**
+     * Cache key name for users
+     */
+    protected $cacheKeyUsers = 'users_list';
+
     public function __construct(AnimalRepositoryInterface $animal)
     {
         $this->repository = $animal;
@@ -24,9 +37,17 @@ class AnimalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return AnimalResource::collection($this->repository->paginate());
+        $user = $request->user()->id;
+        if (Cache::has($this->cacheKey)) {
+            return Cache::get($this->cacheKey);
+        }
+
+        $resource = AnimalResource::collection($request->user()->animals()->paginate());
+        Cache::put($this->cacheKey, $resource);
+        
+        return $resource;
     }
 
     /**
@@ -37,7 +58,24 @@ class AnimalController extends Controller
      */
     public function store(Request $request)
     {
-        $animal = $this->repository->create($request->all());
+        $request->validate(Animal::$rules);
+        $user = $request->user()->id;
+
+        Cache::forget($this->cacheKey);
+        $data = $request->all();
+        $data['user_id'] = $request->user()->id;
+
+        $cacheKey = $this->cacheKeyUsers . 'animals' . $user;
+        Cache::forget($cacheKey);
+
+        if($request->hasFile('photo')) { 
+            $path = $request->file('photo')->store('public/animals');
+            $data['photo'] = Storage::url($path);
+        } else {
+            unset($data['photo']);
+        }
+
+        $animal = $this->repository->create($data);
         return response()->json(new AnimalResource($animal), 201);   
     }
 
@@ -49,7 +87,13 @@ class AnimalController extends Controller
      */
     public function show($id)
     {
-        return new AnimalResource($this->repository->find($id));
+        if (Cache::has($this->cacheKey . $id)) {
+            return Cache::get($this->cacheKey . $id);
+        }
+
+        $resource = new AnimalResource($this->repository->find($id));
+        Cache::put($this->cacheKey . $id, $resource);
+        return $resource;
     }
 
     /**
@@ -61,7 +105,20 @@ class AnimalController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->repository->update($request->all());
+        Cache::forget($this->cacheKey);
+        Cache::forget($this->cacheKey . $id);
+
+        $data = $request->all();
+        $data['user_id'] = $request->user()->id;
+
+        if($request->hasFile('photo')) { 
+            $path = $request->file('photo')->store('public/animals');
+            $data['photo'] = Storage::url($path);
+        } else {
+            unset($data['photo']);
+        }
+        
+        $this->repository->update($data);
         return response()->json(new AnimalResource($this->repository->find($id)));
     }
 
@@ -73,6 +130,8 @@ class AnimalController extends Controller
      */
     public function destroy($id)
     {
+        Cache::forget($this->cacheKey);
+        Cache::forget($this->cacheKey . $id);
         $this->repository->delete();
         return response()->json(null, 204);
     }

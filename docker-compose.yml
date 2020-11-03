@@ -20,6 +20,8 @@ services:
     vivapets-test-redis:
         image: redis
         container_name: vivapets-test-redis
+        networks:
+            - vivapets-test-internal-network
         ports:
             - "6379:6379"
 
@@ -47,6 +49,8 @@ services:
                 USERID: ${USERID:-1000}
                 GROUPID: ${GID:-1000}
         container_name: vivapets-test-app
+        networks:
+            - vivapets-test-internal-network
         depends_on:
             - vivapets-test-redis
             - vivapets-test-db

@@ -1,0 +1,25 @@
+.page-title {
+    margin-bottom: 20px;
+}
+
+table {
+    button.delete {
+        color: $red;
+    }
+}
+
+.card {
+    .card-body {
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        .card-link-delete {
+            color: $red;
+        }
+    }
+
+    .card-body.footer {
+        padding: 0.5rem;
+    }
+}

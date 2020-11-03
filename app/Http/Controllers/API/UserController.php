@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
+use Cache;
+use App\Models\UserType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +18,11 @@ class UserController extends Controller
      */
     private $repository;
 
+    /**
+     * Cache key name
+     */
+    protected $cacheKey = 'users_list';
+
     public function __construct(UserRepositoryInterface $user)
     {
         $this->repository = $user;
@@ -26,9 +33,26 @@ class UserController extends Controller
      *
      * @return App\Http\Resources\UserResource
      */
-    public function index()
+    public function index(Request $request)
     {
-        return UserResource::collection($this->repository->onlyRegularUsers()->paginate());
+        /**
+         * Only admin user can see this method
+         */
+        
+        if($request->user()->type_id != UserType::ADMIN_USER_TYPE_ID) {
+            return response()->json([
+                'message' => 'Only admin users can see other users'
+            ], 401);
+        }
+
+        if (Cache::has($this->cacheKey)) {
+            return Cache::get($this->cacheKey);
+        }
+
+        $resource = UserResource::collection($this->repository->onlyRegularUsers()->paginate());
+        Cache::put($this->cacheKey, $resource);
+        
+        return $resource;
     }
 
     /**
@@ -40,7 +64,31 @@ class UserController extends Controller
      */
     public function animals(Request $request, $id)
     {
-        return AnimalResource::collection($this->repository->animals()->paginate());
+        $cacheKey = $this->cacheKey . 'animals' . $id;
+        if (Cache::has($cacheKey)) {
+            // return Cache::get($cacheKey);
+        }
+
+        $resource = AnimalResource::collection($this->repository->animals()->paginate());
+        Cache::put($cacheKey, $resource);
+        
+        return $resource;
+    }
+
+    /**
+     * Ban a user and prevent him to login
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param   $id
+     * @return App\Http\Resources\AnimalResource
+     */
+    public function ban(Request $request, $id)
+    {
+        Cache::forget($this->cacheKey);
+        $this->repository->ban();
+        return response()->json([
+            'message' => 'ok'
+        ], 200);
     }
 
     /**
@@ -57,8 +105,6 @@ class UserController extends Controller
             ], 403);
         }
 
-        dd(Auth::user()->name);
-        
         return new UserResource($request->user());
     }
 
