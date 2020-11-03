@@ -9,6 +9,13 @@ This is my solution for the proposed test. Features:
 - User types are dynamic
 - Animals Types are dynamic
 - The menu is also dynamic according to the user type
+- Regular Users can:
+    - View, create, edit and delete their animals
+- Admin users can:
+    - View, create, edit and delete breeds
+    - View, create, edit and delete types
+    - View users and their animals
+    - Ban/Unban an user
 
 
 ## Admin User
@@ -30,3 +37,8 @@ The default admin users, created in the seed is `test@vivapets.com` and the pass
 3. Run `make setup`
 4. Run `make up`
 5. Run `make bash && php artisan storage:link`
+
+
+### Docker issues
+
+When i first cloned the repo, the dockerfile and docker-compose files was not working properly (at least in mac os), so i had to make some changes in order to get the app running. Please, check if those cnages did not break up at your linux dist.
