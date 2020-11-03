@@ -13,7 +13,20 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::prefix('v1')->group(function() {
+    Route::post('login', 'API\AuthController@login');
+    Route::post('signup', 'API\AuthController@signup');
+});
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->prefix('v1')->group(function() {
+    Route::get('logout', 'API\AuthController@logout');
+    Route::get('user', 'API\AuthController@user');
+    
+    Route::get('users/{user}/animals', 'API\UserController@animals');
+    Route::get('users/{user}/ban', 'API\UserController@ban');
+    Route::apiResource('users', 'API\UserController');
+
+    Route::apiResource('animals', 'API\AnimalController');
+    Route::apiResource('animals_types', 'API\AnimalTypeController');
+    Route::apiResource('animals_breeds', 'API\AnimalBreedController');
 });
